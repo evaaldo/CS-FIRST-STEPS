@@ -45,6 +45,20 @@ namespace GerenciamentoTarefas.Controller
             return tarefa;
         }
 
+        [HttpPost]
+        public async Task<ActionResult<Tarefa>> PostTarefa(Tarefa tarefa)
+        {
+            if(_context.Tarefas == null)
+            {
+                return NotFound();
+            }
+
+            _context.Tarefas.Add(tarefa);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetTareafa", new { id = tarefa.ID }, tarefa);
+        }
+
         private bool TarefaExists(Guid id)
         {
             return(_context.Tarefas?.Any(tarefa => tarefa.ID == id)).GetValueOrDefault();
