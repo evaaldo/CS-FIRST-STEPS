@@ -59,6 +59,35 @@ namespace GerenciamentoTarefas.Controller
             return CreatedAtAction("GetTareafa", new { id = tarefa.ID }, tarefa);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> PutTarefa(Guid id, Tarefa tarefa)
+        {
+            if(tarefa.ID != id)
+            {
+                return BadRequest();
+            }
+
+            _context.Tarefas.Entry(tarefa).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(DbUpdateConcurrencyException)
+            {
+                if(!TarefaExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
         private bool TarefaExists(Guid id)
         {
             return(_context.Tarefas?.Any(tarefa => tarefa.ID == id)).GetValueOrDefault();
