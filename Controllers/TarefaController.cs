@@ -50,13 +50,13 @@ namespace GerenciamentoTarefas.Controller
         {
             if(_context.Tarefas == null)
             {
-                return NotFound();
+                return Problem("Construtor vazio!");
             }
 
             _context.Tarefas.Add(tarefa);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTareafa", new { id = tarefa.ID }, tarefa);
+            return CreatedAtAction("GetTarefa", new { id = tarefa.ID }, tarefa);
         }
 
         [HttpPut("{id}")]
