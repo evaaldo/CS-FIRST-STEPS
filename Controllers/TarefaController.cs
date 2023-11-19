@@ -27,6 +27,24 @@ namespace GerenciamentoTarefas.Controller
             return await _context.Tarefas.ToArrayAsync();
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Tarefa>> GetTarefa(Guid id)
+        {
+            if(_context.Tarefas == null)
+            {
+                return NotFound();
+            }
+
+            var tarefa = await _context.Tarefas.FindAsync(id);
+
+            if(tarefa == null)
+            {
+                return NotFound();
+            }
+
+            return tarefa;
+        }
+
         private bool TarefaExists(Guid id)
         {
             return(_context.Tarefas?.Any(tarefa => tarefa.ID == id)).GetValueOrDefault();
