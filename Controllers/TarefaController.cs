@@ -59,7 +59,7 @@ namespace GerenciamentoTarefas.Controller
             return CreatedAtAction("GetTareafa", new { id = tarefa.ID }, tarefa);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> PutTarefa(Guid id, Tarefa tarefa)
         {
             if(tarefa.ID != id)
@@ -84,6 +84,27 @@ namespace GerenciamentoTarefas.Controller
                     throw;
                 }
             }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTarefa(Guid id)
+        {
+            if(_context.Tarefas == null)
+            {
+                return NotFound();
+            }
+
+            var tarefa = await _context.Tarefas.FindAsync(id);
+
+            if(tarefa == null)
+            {
+                return NotFound();
+            }
+
+            _context.Tarefas.Remove(tarefa);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
