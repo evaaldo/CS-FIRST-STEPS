@@ -13,5 +13,10 @@ namespace GerenciamentoTarefas.Controller
         {
             _context = context;
         }
+
+        private bool TarefaExists(Guid id)
+        {
+            return(_context.Tarefas?.Any(tarefa => tarefa.ID == id)).GetValueOrDefault();
+        }
     }
 }
